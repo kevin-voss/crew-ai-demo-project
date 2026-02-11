@@ -2,7 +2,7 @@
 
 ## High-Level Overview
 
-This plan adds documentation for a simple HTTP server and comprehensive usage instructions to the README. The workspace currently has minimal content (`.gitignore` only), so the plan includes creating a simple Node.js HTTP server if one does not exist, documenting it thoroughly, and providing clear README instructions for users.
+This plan adds documentation for the simple HTTP server and comprehensive usage instructions to the README. The simple server (at `src/server.js`) is assumed to exist with endpoints `GET /` and `GET /health`. The plan focuses on creating and enhancing documentation artifacts so users and developers can understand, run, and work with the server.
 
 ## Architecture
 
@@ -10,49 +10,50 @@ This plan adds documentation for a simple HTTP server and comprehensive usage in
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Project Structure                         │
 ├─────────────────────────────────────────────────────────────────┤
-│  README.md           ← User-facing instructions (Step 3)        │
-│  package.json        ← Project config, scripts (Step 1)          │
-│  src/                                                           │
-│  └── server.js       ← Simple HTTP server (Step 1)              │
+│  README.md           ← User-facing instructions (Step 02)       │
 │  docs/                                                          │
-│  └── SERVER.md       ← Server documentation (Step 2)             │
+│  └── SERVER.md       ← Server API & technical docs (Step 01)     │
+│  src/                                                           │
+│  └── server.js       ← Simple HTTP server (pre-existing)         │
+│  package.json        ← Project config, scripts (pre-existing)    │
 │  tests/                                                         │
-│  └── server.test.js  ← Server tests (Step 1)                    │
+│  └── server.test.js  ← Server tests (pre-existing)              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Component Diagram
+## Documentation Flow
 
 ```mermaid
 flowchart TB
-    subgraph User["User Interaction"]
+    subgraph User["User Journey"]
         README[README.md]
-        Docs[SERVER.md Docs]
+        Docs[docs/SERVER.md]
     end
 
     subgraph Server["Simple Server"]
         HTTP[HTTP Server]
-        Routes[Routes]
-        Config[Configuration]
+        Root["GET /"]
+        Health["GET /health"]
     end
 
-    subgraph Dev["Development"]
-        Build[npm run build]
-        Test[npm test]
+    subgraph Actions["User Actions"]
+        Install[npm install]
         Start[npm start]
+        Test[npm test]
+        Build[npm run build]
     end
 
+    README --> Install
     README --> Start
-    README --> Build
     README --> Test
+    README --> Build
+    README --> Docs
     Docs --> HTTP
-    HTTP --> Routes
-    HTTP --> Config
-    Build --> HTTP
-    Test --> HTTP
+    HTTP --> Root
+    HTTP --> Health
 ```
 
-## Request Flow
+## Request Flow (Server)
 
 ```mermaid
 sequenceDiagram
@@ -60,47 +61,42 @@ sequenceDiagram
     participant Server
     participant Handler
 
-    User->>Server: HTTP Request (GET /)
-    Server->>Handler: Route request
-    Handler->>Server: Response
-    Server->>User: HTTP Response (200 OK)
+    User->>Server: HTTP Request (GET / or GET /health)
+    Server->>Handler: Route by method + path
+    Handler->>Server: Response (200 or 404)
+    Server->>User: HTTP Response
 ```
 
 ## Step Dependencies
 
 ```mermaid
 graph TD
-    A[01 - Create/Verify Simple Server] --> B[02 - Add Server Documentation]
-    B --> C[03 - Add README Instructions]
+    A[01 - Add Server Documentation] --> B[02 - Add README Instructions]
 
-    style A fill:#e1f5fe
-    style B fill:#e8f5e9
-    style C fill:#fff3e0
+    style A fill:#e8f5e9
+    style B fill:#fff3e0
 ```
 
 | Step | Depends On | Output |
 |------|------------|--------|
-| 01 | None | Working simple server, package.json, tests |
-| 02 | 01 | docs/SERVER.md with API and usage docs |
-| 03 | 01, 02 | README.md with setup and usage instructions |
+| 01 | None | `docs/SERVER.md` with API reference, configuration, architecture |
+| 02 | 01 | `README.md` with setup, usage, and instructions |
 
 ## Prerequisites
 
-- **Node.js** (v18+ recommended) installed on the system
-- **npm** (comes with Node.js) for package management
-- Text editor or IDE for implementation
+- **Node.js** (v18+ recommended) installed
+- **npm** for package management
+- **Simple server** exists at `src/server.js` with `GET /` and `GET /health` endpoints
+- **package.json** with scripts: `start`, `build`, `test`
 
 ## Scope
 
-- **In scope:** Simple HTTP server, server documentation, README with installation and usage instructions
-- **Out of scope:** Database integration, authentication, production deployment configuration
+- **In scope:** Server documentation (`docs/SERVER.md`), README instructions (`README.md`)
+- **Out of scope:** Server implementation changes, new endpoints, deployment configuration
 
 ## File Summary
 
 | File | Purpose |
 |------|---------|
-| `src/server.js` | Simple HTTP server implementation |
 | `docs/SERVER.md` | Detailed server documentation (API, configuration, architecture) |
-| `README.md` | Project overview, quick start, and usage instructions |
-| `package.json` | Project metadata and npm scripts |
-| `tests/server.test.js` | Server unit tests |
+| `README.md` | Project overview, quick start, installation, and usage instructions |
