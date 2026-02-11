@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "build": "node --check src/server.js",
-    "test": "node --test tests/server.test.js tests/rest.test.js"
+    "test": "node --test tests/server.test.js tests/rest.test.js tests/service.test.js"
   },
   "engines": {
     "node": ">=18.0.0"
