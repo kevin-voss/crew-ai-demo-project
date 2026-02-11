@@ -1,8 +1,13 @@
 const http = require('http');
 const { createRouter } = require('./rest/router.js');
-const routes = require('./rest/routes.js');
+const { createRoutes } = require('./rest/routes.js');
+const store = require('./rest/store.js');
+const { createItemsService } = require('./rest/service.js');
 
 const PORT = process.env.PORT || 3000;
+
+const service = createItemsService(store);
+const routes = createRoutes(service);
 
 const router = createRouter();
 router.register('GET', '/api/items', routes.listItems);
