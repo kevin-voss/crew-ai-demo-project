@@ -1,0 +1,14 @@
+{
+  "name": "simple-server",
+  "version": "1.0.0",
+  "description": "A simple HTTP server",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "node --check src/server.js",
+    "test": "node --test tests/server.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
